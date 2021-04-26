@@ -9,6 +9,7 @@ export function MyPlants() {
         <View style={styles.container}>
             <Header/>
 
+
         </View>
     )
 }
