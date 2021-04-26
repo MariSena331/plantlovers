@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 
 import {
+    Alert,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
@@ -10,9 +11,10 @@ import {
     Text,
     TextInput,
     TouchableNativeFeedback,
-    View,
+    View
 } from 'react-native'
 import { Button } from '../components/Button'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import colors from '../styles/colors'
 import fonts from '../styles/fonts'
@@ -23,8 +25,18 @@ export function UserIdentification() {
     const [name, setName] = useState<string>()
     const navigation = useNavigation()
 
-    function handleConfirmation() {
-        navigation.navigate('Confirmation')
+    async function handleConfirmation() {
+        if (!name)
+            return Alert.alert('Me diz como chamar você 🥺')
+
+        try {
+            await AsyncStorage.setItem('@plantlovers:user', name)
+            navigation.navigate('Confirmation')
+        } catch {
+            Alert.alert('Não foi possível salvar seu nome.')
+        }
+
+
     }
 
     function handleInputBlur() {
